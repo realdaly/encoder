@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./editor/icons/icon.png">
+    <title>أداة ترميز النص</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .tox-tinymce {
+            border-radius: 0% !important;
+        }
+    </style>
+</head>
+<body>
+    <textarea></textarea>
+    <script src="./editor/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "textarea",
+            branding: false,
+            resize: false,
+            language: "ar",
+            width: "100%",
+            height: "100vh",
+            plugins: "code",
+            toolbar: "undo redo | removeformat | code | header1 header2 header3 pageNum",
+            preview_styles: false,
+            promotion: false,
+            paste_data_images: false,
+
+            setup: function(editor){
+                editor.on("init", style)
+
+                editor.ui.registry.addButton("pageNum", {
+                    text: "تعيين صفحة",
+                    onAction: () => {
+                        editor.windowManager.open({
+                            title: "حدد رقم الصفحة",
+                            body: {
+                                type: "panel",
+                                items: [
+                                    {
+                                        type: "input",
+                                        name: "pageNumber",
+                                        label: "حقل كتابة الرقم",
+                                        inputMode: "numeric",
+                                    },
+                                ]
+                            },
+                            buttons: [
+                                {
+                                    type: "cancel",
+                                    name: "cancel",
+                                    text: "Cancel"
+                                },
+                                {
+                                    type: "submit",
+                                    name: "submit",
+                                    text: "تم",
+                                    primary: true
+                                }
+                            ],
+                            onSubmit: function(api) {
+                                const pageNumber = api.getData().pageNumber;
+                                var selectedText = editor.selection.getContent();
+                                var divWrappedText = `<div class="page" data-page="${pageNumber}">${selectedText}</div>`;
+                                editor.execCommand('mceInsertContent', false, divWrappedText);
+                                api.close();
+                            }
+                        })
+                    }
+                });
+
+                editor.ui.registry.addButton("header1", {
+                    text: "عنوان رئيسي",
+                    onAction: () => {
+                        var selectedText = editor.selection.getContent();
+                        var divWrappedText = `<div class="header1">${selectedText}</div>`;
+                        editor.execCommand('mceInsertContent', false, divWrappedText);
+                    }
+                });
+
+                editor.ui.registry.addButton("header2", {
+                    text: "عنوان ثانوي",
+                    onAction: () => {
+                        var selectedText = editor.selection.getContent();
+                        var divWrappedText = `<div class="header2">${selectedText}</div>`;
+                        editor.execCommand('mceInsertContent', false, divWrappedText);
+                    }
+                });
+
+                editor.ui.registry.addButton("header3", {
+                    text: "عنوان 3",
+                    onAction: () => {
+                        var selectedText = editor.selection.getContent();
+                        var divWrappedText = `<div class="header3">${selectedText}</div>`;
+                        editor.execCommand('mceInsertContent', false, divWrappedText);
+                    }
+                });
+
+            },
+        });
+
+
+        function style(){
+            const iframe = document.querySelector("iframe");
+            const iframeHead = iframe.contentWindow.document.head;
+            iframeHead.innerHTML += `<link rel="stylesheet" href="./editor/css/style.css">`
+        }
+
+    </script>
+</body>
+</html>

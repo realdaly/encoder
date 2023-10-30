@@ -1,0 +1,21 @@
+.page {
+    border: 1px solid #000
+}
+
+.header1 {
+    font-size: 24px;
+    font-weight: bolder;
+    color: tomato;
+}
+
+.header2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #bada55;
+}
+
+.header3 {
+    font-size: 14px;
+    font-weight: bold;
+    color: crimson;
+}
