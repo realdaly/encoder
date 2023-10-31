@@ -27,16 +27,56 @@
             language: "ar",
             width: "100%",
             height: "100vh",
-            plugins: "code",
-            toolbar: "undo redo | removeformat | code | header1 header2 header3 pageNum",
+            plugins: "code table",
+            toolbar: "undo redo | removeFormating deleteTable | showCode | pageNum | header1 header2 header3 | poem line",
+            menubar: false,
+            table_toolbar: '',
             preview_styles: false,
             promotion: false,
             paste_data_images: false,
 
             setup: function(editor){
+                // GENERAL CONFIG
                 editor.on("init", style)
 
+                editor.ui.registry.addIcon('header1', `<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3rem" width="1.3rem" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h8"></path><path d="M4 18V6"></path><path d="M12 18V6"></path><path d="m17 12 3-2v8"></path></svg>` );
+
+                editor.ui.registry.addIcon('header2', `<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3rem" width="1.3rem" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h8"></path><path d="M4 18V6"></path><path d="M12 18V6"></path><path d="M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1"></path></svg>` );
+
+                editor.ui.registry.addIcon('header3', `<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3rem" width="1.3rem" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h8"></path><path d="M4 18V6"></path><path d="M12 18V6"></path><path d="M17.5 10.5c1.7-1 3.5 0 3.5 1.5a2 2 0 0 1-2 2"></path><path d="M17 17.5c2 1.5 4 .3 4-1.5a2 2 0 0 0-2-2"></path></svg>` );
+
+                editor.ui.registry.addIcon('poem', `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3rem" width="1.3rem" xmlns="http://www.w3.org/2000/svg"><path d="M20 2C21.6569 2 23 3.34315 23 5V7H21V19C21 20.6569 19.6569 22 18 22H4C2.34315 22 1 20.6569 1 19V17H17V19C17 19.5128 17.386 19.9355 17.8834 19.9933L18 20C18.5128 20 18.9355 19.614 18.9933 19.1166L19 19V4H6C5.48716 4 5.06449 4.38604 5.00673 4.88338L5 5V15H3V5C3 3.34315 4.34315 2 6 2H20Z"></path></svg>` );
+
+                editor.ui.registry.addIcon('line', `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3rem" width="1.3rem" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M7.41 13.41L6 12l-4 4 4 4 1.41-1.41L5.83 17H21v-2H5.83zM16.59 10.59L18 12l4-4-4-4-1.41 1.41L18.17 7H3v2h15.17z"></path></svg>` );
+
+
+                // CUSTOM BUTTONS
+                editor.ui.registry.addButton("removeFormating", {
+                    icon: "remove-formatting",
+                    text: "مسح التنسيق",
+                    onAction: function () {
+                        editor.execCommand("RemoveFormat");
+                    },
+                });
+
+                editor.ui.registry.addButton("showCode", {
+                    icon: "code-sample",
+                    text: "عرض الرمز    ",
+                    onAction: function () {
+                        editor.execCommand("mceCodeEditor");
+                    },
+                });
+
+                editor.ui.registry.addButton("deleteTable", {
+                    icon: "table-delete-table",
+                    text: "حذف جدول",
+                    onAction: function () {
+                        editor.execCommand("mceTableDelete");
+                    },
+                });
+
                 editor.ui.registry.addButton("pageNum", {
+                    icon: "page-break",
                     text: "تعيين صفحة",
                     onAction: () => {
                         editor.windowManager.open({
@@ -77,6 +117,7 @@
                 });
 
                 editor.ui.registry.addButton("header1", {
+                    icon: "header1",
                     text: "عنوان رئيسي",
                     onAction: () => {
                         var selectedText = editor.selection.getContent();
@@ -86,6 +127,7 @@
                 });
 
                 editor.ui.registry.addButton("header2", {
+                    icon: "header2",
                     text: "عنوان ثانوي",
                     onAction: () => {
                         var selectedText = editor.selection.getContent();
@@ -95,6 +137,7 @@
                 });
 
                 editor.ui.registry.addButton("header3", {
+                    icon: "header3",
                     text: "عنوان 3",
                     onAction: () => {
                         var selectedText = editor.selection.getContent();
@@ -103,6 +146,25 @@
                     }
                 });
 
+                editor.ui.registry.addButton("poem", {
+                    icon: "poem",
+                    text: "أبيات شِعر",
+                    onAction: () => {
+                        var selectedText = editor.selection.getContent();
+                        var divWrappedText = `<div class="poem">${selectedText}</div>`;
+                        editor.execCommand('mceInsertContent', false, divWrappedText);
+                    }
+                });
+
+                editor.ui.registry.addButton("line", {
+                    icon: "line",
+                    text: "صدر وعجز",
+                    onAction: () => {
+                        var selectedText = editor.selection.getContent();
+                        var divWrappedText = `<div class="line">${selectedText}</div>`;
+                        editor.execCommand('mceInsertContent', false, divWrappedText);
+                    }
+                });
             },
         });
 
