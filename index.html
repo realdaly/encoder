@@ -121,7 +121,7 @@
                     text: "عنوان فصل",
                     onAction: () => {
                         var selectedText = editor.selection.getContent();
-                        var divWrappedText = `<div class="header1 centered">${selectedText}</div>`;
+                        var divWrappedText = `<div class="chapter">${selectedText}</div>`;
                         editor.execCommand('mceInsertContent', false, divWrappedText);
                     }
                 });
