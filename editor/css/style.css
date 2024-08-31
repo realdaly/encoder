@@ -36,10 +36,28 @@
     color: #bada55;
 }
 
+.right {
+    text-align: right;
+    width: 100%;
+    margin: 0 auto;
+}
+
 .centered {
     text-align: center;
     width: fit-content;
     margin: 0 auto;
+}
+
+.left-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+}
+
+.left {
+    background-color: red;
+    text-align: center;
+    width: fit-content;
 }
 
 .header1.centered {
@@ -65,6 +83,14 @@
 }
 
 .encodedImg {
-    margin: 0 auto;
+    margin: 5px auto;
     display: block;
+    max-width: 1024px;
+    height: auto;
+}
+
+.link {
+    padding: 0 7px;
+    color: blue;
+    text-decoration: underline;
 }
